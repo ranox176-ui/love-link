@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Love Link Generator ❤️</title>
+
+<style>
+body{
+  font-family: Arial;
+  background: linear-gradient(135deg,#ff9a9e,#fad0c4);
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  margin:0;
+}
+
+.card{
+  background:#fff;
+  padding:25px;
+  border-radius:20px;
+  width:340px;
+  text-align:center;
+  box-shadow:0 10px 25px rgba(0,0,0,.2);
+}
+
+input{
+  width:100%;
+  padding:12px;
+  margin:10px 0;
+  border-radius:10px;
+  border:1px solid #ccc;
+  font-size:15px;
+}
+
+button{
+  padding:12px 20px;
+  border:none;
+  border-radius:25px;
+  background:#ff4d6d;
+  color:#fff;
+  cursor:pointer;
+  font-size:16px;
+  width:100%;
+}
+
+.linkBox{
+  margin-top:15px;
+  font-size:13px;
+  word-wrap:break-word;
+  background:#f3f3f3;
+  padding:10px;
+  border-radius:10px;
+}
+
+img{
+  width:220px;
+  border-radius:15px;
+  margin-top:15px;
+}
+</style>
+</head>
+
+<body>
+
+<!-- GENERATOR PAGE -->
+<div class="card" id="generator">
+  <h2>Create Your Love Link ❤️</h2>
+
+  <input id="nameInput" placeholder="Enter Name">
+  <input type="file" id="imgInput" accept="image/*">
+
+  <button onclick="generateLink()">Generate Link</button>
+
+  <div class="linkBox" id="linkBox"></div>
+</div>
+
+<!-- VIEW PAGE -->
+<div class="card" id="viewer" style="display:none">
+  <h2 id="showName"></h2>
+  <img id="showImg">
+  <p>
+    कुछ लोग किस्मत में नहीं होते,  
+    पर दिल में हमेशा रहते हैं ❤️
+  </p>
+</div>
+
+<script>
+// अगर URL में data है → viewer page दिखाओ
+const params=new URLSearchParams(window.location.search);
+if(params.get("name") && params.get("img")){
+  document.getElementById("generator").style.display="none";
+  document.getElementById("viewer").style.display="block";
+
+  document.getElementById("showName").innerText=params.get("name");
+  document.getElementById("showImg").src=params.get("img");
+}
+
+// 🔥 WORKING FUNCTION
+function generateLink(){
+  const name=document.getElementById("nameInput").value.trim();
+  const fileInput=document.getElementById("imgInput");
+
+  if(name.length===0){
+    alert("Name likho pehle");
+    return;
+  }
+
+  if(fileInput.files.length===0){
+    alert("Photo select karo");
+    return;
+  }
+
+  const file=fileInput.files[0];
+  const reader=new FileReader();
+
+  reader.onload=function(e){
+    const imgData=e.target.result;
+    const baseURL=window.location.href.split("?")[0];
+
+    const finalURL=
+      baseURL+"?name="+encodeURIComponent(name)+
+      "&img="+encodeURIComponent(imgData);
+
+    document.getElementById("linkBox").innerText=
+      "Ye link copy karo 👇\n\n"+finalURL;
+  };
+
+  reader.readAsDataURL(file);
+}
+</script>
+
+</body>
+</html>
