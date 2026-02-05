@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Love Magic</title>
+
+<style>
+body{
+      rgin:0;
+  font-family:Arial;
+  background:#ffdde1;
+  text-align:center;
+  overflow:hidden;
+}
+.page{display:none;padding-top:60px}
+.active{display:block}
+button{
+  padding:12px 22px;
+  font-size:18px;
+  border:none;
+  border-radius:10px;
+  margin:10px;
+  cursor:pointer;
+  background:#ff4d6d;
+  color:white;
+}
+#noBtn{position:absolute}
+
+.heart{
+  position:absolute;
+  color:red;
+  font-size:22px;
+  animation:float 4s linear infinite;
+}
+@keyframes float{
+  from{transform:translateY(100vh);}
+  to{transform:translateY(-10vh);}
+}
+
+.balloon{
+  position:absolute;
+  width:60px;height:80px;
+  border-radius:50%;
+  background:red;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<!-- PAGE 1 -->
+<div id="p1" class="page active">
+<h1>Do you like me? ❤️</h1>
+<button onclick="yes()">Yes</button>
+<button id="noBtn" onclick="moveNo()">No</button>
+</div>
+
+<!-- PAGE 2 -->
+<div id="p2" class="page">
+<h1>💖</h1>
+<h2 id="shayari1"></h2>
+<button onclick="startGame()">Magic Button ✨</button>
+</div>
+
+<!-- PAGE 3 GAME -->
+<div id="p3" class="page">
+<h2>Pop 3 balloons 🎯</h2>
+</div>
+
+<!-- PAGE 4 PHOTO -->
+<div id="p4" class="page">
+<h2>Click the photo ❤️</h2>
+<img id="lovePhoto" src="" width="250" style="border-radius:20px;cursor:pointer">
+<h3 id="shayari2"></h3>
+</div>
+
+<!-- PAGE 5 FINAL -->
+<div id="p5" class="page">
+<h1>❤️</h1>
+<h2 id="finalText"></h2>
+<h3 id="credit"></h3>
+</div>
+
+<script>
+let noCount=0;
+let balloons=0;
+
+// USER INPUT (CHANGE THESE)
+let userName="RISHI";
+let photoLink="https://drive.google.com/uc?export=view&id=1-ysoVR8t47ne5MtAGKf5TOJ4P6qNIHef";
+
+document.getElementById("lovePhoto").src=photoLink;
+
+function moveNo(){
+  noCount++;
+  if(noCount>5) return;
+  let btn=document.getElementById("noBtn");
+  btn.style.top=Math.random()*80+"vh";
+  btn.style.left=Math.random()*80+"vw";
+}
+
+function yes(){
+  showPage("p2");
+  document.getElementById("shayari1").innerHTML=
+  "Tum haan kaho ya na kaho,<br>Dil tumhara hi rahega 💕";
+  hearts();
+}
+
+function hearts(){
+  setInterval(()=>{
+    let h=document.createElement("div");
+    h.className="heart";
+    h.innerHTML="❤️";
+    h.style.left=Math.random()*100+"vw";
+    document.body.appendChild(h);
+    setTimeout(()=>h.remove(),4000);
+  },300);
+}
+
+function startGame(){
+  showPage("p3");
+  balloons=0;
+  for(let i=0;i<3;i++){
+    let b=document.createElement("div");
+    b.className="balloon";
+    b.style.left=Math.random()*80+"vw";
+    b.style.top=Math.random()*60+"vh";
+    b.onclick=()=>{
+      b.remove();
+      balloons++;
+      if(balloons==3) showPhoto();
+    };
+    document.body.appendChild(b);
+  }
+}
+
+function showPhoto(){
+  showPage("p4");
+  document.getElementById("shayari2").innerHTML=
+  "Bas ek click aur,<br>meri duniya tum ❤️";
+}
+
+document.getElementById("lovePhoto").onclick=()=>{
+  showPage("p5");
+  document.getElementById("finalText").innerHTML=
+  "Tere bina sab adhura,<br>Tere saath sab poora 💖";
+  document.getElementById("credit").innerHTML=
+  "Made by "+userName;
+}
+
+function showPage(id){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+</script>
+
+</body>
+</html>
